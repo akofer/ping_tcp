@@ -24,4 +24,4 @@ $ ./ping_tcp 192.168.1.100 8080    # ping the tcp server with ip 192.168.100.1 a
 
 # Implementations
 
-There are multiple implementations using different program languages, including Python, C, Go, etc..
+There are several implementations using different program languages, including Python, C, Go, etc.. We promise they work the same except performance limitations of languages. Choose any one as you wish. 
