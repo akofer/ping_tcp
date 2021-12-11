@@ -1,8 +1,8 @@
-# ping_tcp
+# Ping via TCP Connection
 
-The best tool to detect delay and bandwith of a tcp connection between two computers (other than ping without bandwith info).
+To detect **both delay and bandwith** between two computers via a tcp connection, this project aims to provide simply the best solution.
 
-Usage:
+# Usage:
 
 Before we start detection, the tcp server program named ping_tcp_srv should be run on the remote computer as below:
 
