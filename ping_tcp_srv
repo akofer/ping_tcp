@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+ 
+import time, sys, socket          # 导入 socket 模块
+ 
+s = socket.socket()         # 创建 socket 对象
+host = "0.0.0.0"
+port = 8080 if len(sys.argv) == 1 else int(sys.argv[1])  # 设置端口
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind((host, port))        # 绑定端口
+print("Server started: %s:%d" % (host, port))
+ 
+s.listen(1)                 # 等待客户端连接
+while True:
+  c, addr = s.accept()     # 建立客户端连接
+  print('client: ', addr)
+  n = 0
+  fin_time = time.time_ns()
+  while True:
+    try:
+      msg = c.recv(1024)
+    except:
+      pass
+    cur_time = time.time_ns()
+    if len(msg) == 0:
+      print("connection closed")
+      break
+    delay = 1000
+    t = (cur_time - fin_time) / (10**6) - delay
+    t = t if t > 0 else 0
+    print("%d bytes from %s tcp port %d: seq=%d time=%.3f" % (len(msg), addr[0], addr[1], n, t))
+    n = n + 1
+    try:
+      c.send(msg[::-1])
+    except:
+      pass
+    fin_time = time.time_ns()

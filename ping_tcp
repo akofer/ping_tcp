@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+ 
+import sys, time, random, socket          # 导入 socket 模块
+
+if len(sys.argv) != 3:
+  print("Usage: %s host port" % sys.argv[0])
+  sys.exit(-1)
+
+host = sys.argv[1]
+port = int(sys.argv[2])
+packet_size = 1024000
+ 
+s = socket.socket()         # 创建 socket 对象
+ 
+s.connect((host, port))
+
+n = 0
+while True:
+  begin = time.time_ns()
+  t = 0
+  c = 0
+  while t < 1000:
+    msg = random.randbytes(packet_size)
+
+    sent = 0
+    while sent < len(msg):
+      sent = sent + s.send(msg[sent:])
+    recv = 0
+    while recv < sent:
+      echo_msg = s.recv(packet_size)
+      if len(echo_msg) == 0: break
+      recv = recv + len(echo_msg)
+
+    c = c + len(msg)
+    t = (time.time_ns() - begin) / 10**6
+
+    # if echo_msg != msg[::-1]:
+    #   print("bad response: '%s'" % echo_msg)
+    #   sys.exit(-1)
+
+  speed_KBs = c/1024/(t/1000)
+  speed = ""
+  if speed_KBs < 1024:
+    speed = '%.3fKB/s' % speed_KBs
+  else:
+    speed = '%.3fMB/s' % (speed_KBs/1024)
+
+  print("%d bytes sent/recv via %s tcp port %d: seq=%d time=%.3f ms speed=%s" % (c, host, port, n, t, speed))
+
+  time.sleep(0 if t > 1000 else 1 - t/1000)
+
+  n = n + 1
+
+s.close()
