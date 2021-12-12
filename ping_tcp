@@ -9,7 +9,7 @@ if len(sys.argv) != 3:
 
 host = sys.argv[1]
 port = int(sys.argv[2])
-packet_size = 1024000
+packet_size = 102400
  
 s = socket.socket()         # 创建 socket 对象
  
@@ -42,9 +42,9 @@ while True:
   speed_KBs = c/1024/(t/1000)
   speed = ""
   if speed_KBs < 1024:
-    speed = '%.3fKB/s' % speed_KBs
+    speed = '%.3f KB/s' % speed_KBs
   else:
-    speed = '%.3fMB/s' % (speed_KBs/1024)
+    speed = '%.3f MB/s' % (speed_KBs/1024)
 
   print("%d bytes sent/recv via %s tcp port %d: seq=%d time=%.3f ms speed=%s" % (c, host, port, n, t, speed))
 

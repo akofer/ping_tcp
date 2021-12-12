@@ -27,8 +27,8 @@ while True:
       break
     delay = 1000
     t = (cur_time - fin_time) / (10**6) - delay
-    t = t if t > 0 else 0
-    print("%d bytes from %s tcp port %d: seq=%d time=%.3f" % (len(msg), addr[0], addr[1], n, t))
+    if t > 0:
+      print("%d bytes from %s tcp port %d: seq=%d time=%.3f" % (len(msg), addr[0], addr[1], n, t))
     n = n + 1
     try:
       c.send(msg[::-1])
